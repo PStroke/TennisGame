@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibTennis\LibTennis.csproj">
+      <Project>{76c759c5-f2ed-4129-befc-c1c1fcf901f5}</Project>
+      <Name>LibTennis</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

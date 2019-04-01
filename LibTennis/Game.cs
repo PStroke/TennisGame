@@ -30,6 +30,7 @@ namespace LibTennis
         public Player Player2 { get => _player2; set => _player2 = value; }
         public bool Game_finished { get => game_finished; set => game_finished = value; }
         public event Action GameFinished;
+        public event Action BallPlayed;
 
         public void AddPoint(Player winner, Player looser)
         {
@@ -45,11 +46,9 @@ namespace LibTennis
                 if (looser.Score == Point.Advantage && winner.Score == Point.Forthy)
                     looser.Score = winner.Score = Point.Forthy;
                 else
-                {
-
                     winner.Score++;
-                }
             }
+            BallPlayed?.Invoke();
             if (winner.Score == Point.Win)
             {
                 Game_finished = true;
@@ -60,82 +59,6 @@ namespace LibTennis
         private void OnGameFinished()
         {
             GameFinished?.Invoke();
-        }
-
-        public void AddPointPlayer1()
-        {
-            if(!Game_finished)
-            {
-                int i = CheckScore();
-                switch (i)
-                {
-                    case 0:
-                        Player1.Score = Point.Advantage;
-                        break;
-                    case 1:
-                        Game_finished = true;
-                        break;
-                    case 2:
-                        Player2.Score = Point.Forthy;
-                        break;
-
-                    case 3:
-                        Player1.Score++;
-                        break;
-                    default:
-                        break; 
-                }
-            }
-        }
-
-        public void AddPointPlayer2()
-        {
-            if (!Game_finished)
-            {
-                int i = CheckScore();
-                switch (i)
-                {
-                    case 0:
-                        Player2.Score = Point.Advantage;
-                        break;
-                    case 1:
-                        Game_finished = true;
-                        break;
-                    case 2:
-                        Player1.Score = Point.Forthy;
-                        break;
-
-                    case 3:
-                        Player2.Score++;
-                        break;
-                    default:
-                        break; 
-                }
-            }
-        }
-
-        public int CheckScore()
-        {
-            if(Player1.Score == Point.Forthy || Player2.Score == Point.Forthy)
-            {
-                if(Player1.Score == Point.Forthy && Player2.Score == Point.Forthy)
-                    return 0;
-                else
-                {
-                    if(Player1.Score == Point.Advantage && Player2.Score == Point.Forthy)
-                        return 1;
-                    else
-                    {
-                        if (Player1.Score == Point.Forthy && Player2.Score == Point.Advantage)
-                            return 2;
-                    }
-                }
-                return 1;
-            }
-            else
-            {
-                return 3;
-            }
         }
 
         public void Reset()
